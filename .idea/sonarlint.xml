@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarLintProjectSettings">
+    <option name="moduleMapping">
+      <map>
+        <entry key="eureka-consul-WebClient" value="WebClient_Eureka" />
+        <entry key="eureka-server" value="servereureka" />
+        <entry key="service-car" value="car" />
+        <entry key="service-client" value="client" />
+        <entry key="service-gateway" value="gateway" />
+      </map>
+    </option>
+  </component>
+</project>

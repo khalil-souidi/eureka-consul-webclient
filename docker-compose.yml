@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-webclient
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+      - app-net
+
+  # Grafana Service
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-webclient
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Default Grafana password
+    ports:
+      - "3000:3000"  # Grafana on port 3000
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+    volumes:
+      - grafana-data:/var/lib/grafana
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
+
+networks:
+  monitoring:
+    driver: bridge
+  app-net:
+    driver: bridge
+
+volumes:
+  grafana-data:
